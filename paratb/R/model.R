@@ -14,8 +14,6 @@ setClass("paratb", contains = "SimInf_model")
 ##' @import methods
 ##' @import Matrix
 ##' @export
-##' @examples
-##' ## Please add example(s) how to use the model
 paratb <- function(u0 = NULL, tspan = NULL) {
 
     compartments <- c("S0", "S1", "T1H", "T1L", "S2", "T2H", "T2L",
@@ -36,26 +34,25 @@ paratb <- function(u0 = NULL, tspan = NULL) {
         u0 <- u0[, compartments, drop = FALSE]
     } else {
 
-    ## Start with 10 farms with 200 animals each without any infection
-    u0 <- structure(list(S0 = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         S1 = c(50, 50, 50, 50, 50, 50, 50, 50, 50, 50),
-                         T1H = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         T1L = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         S2 = c(50, 50, 50, 50, 50, 50, 50, 50, 50, 50),
-                         T2H = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         T2L = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         E2H = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         E2L = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         S3 = c(100, 100, 100, 100, 100, 100, 100, 100, 100, 100),
-                         E3H = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         E3L = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         L3H = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         L3L = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         H3 = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         BM = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         BMp = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L),
-                         BMn = c(0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L)),
-                    row.names = c(NA, 10L), class = "data.frame")
+        ## Start with 10000 farms with 200 animals each without any infection
+        u0 <- data.frame(S0 = rep(0, 10000),
+                         S1 = 50,
+                         T1H = 0,
+                         T1L = 0,
+                         S2 = 50,
+                         T2H = 0,
+                         T2L = 0,
+                         E2H = 0,
+                         E2L = 0,
+                         S3 = 100,
+                         E3H = 0,
+                         E3L = 0,
+                         L3H = 0,
+                         L3L = 0,
+                         H3 = 0,
+                         BM = 0,
+                         BMp = 0,
+                         BMn = 0)
     }
 
     G <- new("dgCMatrix", i = c(1L, 2L, 3L, 1L, 2L, 3L, 4L, 5L, 6L,

@@ -1,3 +1,115 @@
+##' random_events
+##'
+##' A method to add random external transfer events to a model. This
+##' is to illustrate the model working with events despite that we
+##' cannot share the recording events used in the study.
+##'
+##' @title random_events
+##' @param model The model that the random event should be added to
+##' @param n The number of random events
+##' @import Matrix
+##' @return A model object
+random_events <- function(model, n) {
+
+    ## All events are external transfers
+    event <- 3L
+
+    ## Sample the vector from minimum to maximum of tspan
+    time <- sample(seq(min(model@tspan), max(model@tspan)), n, replace = TRUE)
+
+    ## sample pairs of nodes for node and dest
+    nodes <- sapply(1:n, function(i){
+        sample(seq_len(ncol(model@u0)), 2, replace = FALSE)
+    })
+    node <- nodes[1,]
+    dest <- nodes[2,]
+
+    ## n is just any number because we will use the proportion
+    number <- 1L
+
+    ## Sample the proportion from between 1% and 10% of the animals in
+    ## the compartment(s) for the "select".
+    proportion <- round(runif(n, 0.01, 0.05), 2)
+
+    ## The select can be one of the 3 external transfers 2, 4, 5
+    select <- sample(c(2, 4, 5), n, replace = TRUE)
+
+    ## Apply no shift
+    shift <- 0
+
+    ## Stick it in a data.frame
+    events <- data.frame(event = event,
+                         time = as.integer(time),
+                         node = as.numeric(node),
+                         dest = as.numeric(dest),
+                         n = number,
+                         proportion = as.numeric(proportion),
+                         select = as.numeric(select),
+                         shift = as.numeric(shift))
+
+    ## select matrix
+    E <- Matrix(c(1, 1, 0, 0, 0, 0, 0, 0, 0, #S0
+                  0, 1, 1, 0, 0, 0, 0, 0, 0, #S1
+                  0, 1, 1, 0, 0, 1, 0, 0, 0, #T1H
+                  0, 1, 1, 0, 0, 1, 0, 0, 0, #T1L
+                  0, 0, 0, 1, 0, 0, 0, 0, 0, #S2
+                  0, 0, 0, 1, 0, 0, 1, 0, 0, #T2H
+                  0, 0, 0, 1, 0, 0, 1, 0, 0, #T2L
+                  0, 0, 0, 1, 0, 0, 1, 0, 0, #E2H
+                  0, 0, 0, 1, 0, 0, 1, 0, 0, #E2L
+                  0, 0, 0, 0, 1, 0, 0, 0, 0, #S3
+                  0, 0, 0, 0, 1, 0, 0, 1, 0, #E3H
+                  0, 0, 0, 0, 1, 0, 0, 1, 0, #E3L
+                  0, 0, 0, 0, 1, 0, 0, 1, 0, #L3H
+                  0, 0, 0, 0, 1, 0, 0, 1, 0, #L3L
+                  0, 0, 0, 0, 1, 0, 0, 1, 0, #H3
+                  0, 0, 0, 0, 0, 0, 0, 0, 1, #BM
+                  0, 0, 0, 0, 0, 0, 0, 0, 0, #BMp
+                  0, 0, 0, 0, 0, 0, 0, 0, 0),#BMn
+                nrow   = 18,
+                ncol   = 9,
+                byrow  = TRUE,
+                sparse = TRUE)
+    row.names(E) <- c("S0", "S1", "T1H", "T1L", "S2", "T2H", "T2L", "E2H",
+                      "E2L", "S3", "E3H", "E3L", "L3H", "L3L", "H3",
+                      "BM", "BMp", "BMn")
+    colnames(E) <- c("Calves born", "Calves Die/Move",
+                     "Calves Age", "Heifers Age/Die/Move",
+                     "Cows Age/Die/Move", "Seed a calf", "Seed a heifer",
+                     "Seed a cow", "Milk sampling")
+
+    ## shift matrix
+    N <- matrix(c(0, 0, #S0
+                  3, 0, #S1
+                  3, 0, #T1H
+                  3, 0, #T1L
+                  0, 5, #S2
+                  0, 5, #T2H
+                  0, 5, #T2L
+                  0, 3, #E2H
+                  0, 3, #E2L
+                  0, 0, #S3
+                  0, 0, #E3H
+                  0, 0, #E3L
+                  0, 0, #L3H
+                  0, 0, #L3L
+                  0, 0, #H3
+                  0, 0, #BM
+                  0, 0, #BMp
+                  0, 0), #BMn
+                nrow   = 18,
+                ncol   = 2,
+                byrow  = TRUE)
+    row.names(N) <- c("S0", "S1", "T1H", "T1L", "S2", "T2H", "T2L", "E2H",
+                      "E2L", "S3", "E3H", "E3L", "L3H", "L3L", "H3",
+                      "BM", "BMp", "BMn")
+    colnames(N) <- c("Calves Age", "Heifers Age")
+
+    ## return the model with added events
+    model@events <- SimInf_events(E = E, N = N, events = events)
+    model
+}
+
 ##' seed_herd
 ##'
 ##' A method for seeding infected animals in a herd.
@@ -93,7 +205,6 @@ add_surveillance_event <- function(model,
     ## matrix:
     model <- add_sampling(model)
     ## And turn off the stochastic samplings events
-    model@gdata["delta1"] <- 0
     model@gdata["delta2"] <- 0
     type <- switch(type,
                    blood = 9,

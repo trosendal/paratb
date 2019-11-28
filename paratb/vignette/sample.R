@@ -42,3 +42,43 @@ plot(df$time,
      ylim = c(0, max(df$count)),
      ylab = "Count of positive herds",
      xlab = "Time in days")
+
+
+## Now run the same model but inject bulk milk sampling events in 1000
+## herds per year and monitor the outcome of that compared to the
+## disease.
+
+years <- max(model@tspan)/365
+
+herds_for_surveillance <- sample(seq_len(ncol(model@u0)),
+                                 1000 * years,
+                                 replace = TRUE)
+
+times_for_surveillance <- sample(min(model@tspan):max(model@tspan),
+                                 length(herds_for_surveillance),
+                                 replace = TRUE)
+
+model <- add_surveillance_event(model,
+                                i = herds_for_surveillance,
+                                t = times_for_surveillance,
+                                n = 1L)
+
+## Run the model again but with the surveillance events
+result <- run(model)
+
+## Extract the data we need about the herd status detection status
+df <- counti(result, "true")
+df_bulk_milk <- counti(result, "milk")
+
+plot(df$time,
+     df$count,
+     type = "s",
+     ylim = c(0, max(df$count)),
+     ylab = "Count of positive herds",
+     xlab = "Time in days")
+
+lines(df_bulk_milk$time,
+     df_bulk_milk$count,
+     type = "s",
+     col = "#939393",
+     lty = 2)

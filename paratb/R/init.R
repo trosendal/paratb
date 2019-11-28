@@ -155,26 +155,6 @@ seed_herd <- function(model,
     return(model)
 }
 
-##' add_sampling
-##'
-##' Add a couple of columns to the select matrix to do blood and milk
-##' sampling. This will require scheduling birth events with select 9
-##' and 10
-##'
-##' @title add_sampling
-##' @param model A paratb model object
-##' @return A modified model object
-##' @author Thomas Rosendal
-add_sampling <- function(model)
-{
-    model@events@E <- cbind(model@events@E,
-                            Matrix(c(rep(0, 15), 1, rep(0, 23), 1, rep(0, 2)),
-                                   ncol = 2,
-                                   sparse = TRUE,
-                                   dimnames = list(NULL, c("Blood sampling", "Milk sampling"))))
-    model
-}
-
 ##' Add surveillance events
 ##'
 ##' A method for adding surveillance events to the model. These are
@@ -196,27 +176,20 @@ add_sampling <- function(model)
 ##' @export
 ##' @author Thomas Rosendal
 add_surveillance_event <- function(model,
-                            i,
-                            t = 1,
-                            type = c("blood", "milk"),
-                            n = 1,
-                            events = as(model@events, "data.frame"))
+                                   i,
+                                   t = 1,
+                                   n = 1,
+                                   events = as(model@events, "data.frame"))
 {
-    ## check that you added the appropriate select columns to the E
-    ## matrix:
-    model <- add_sampling(model)
     ## And turn off the stochastic samplings events
     model@gdata["delta2"] <- 0
-    type <- switch(type,
-                   blood = 9,
-                   milk = 10)
     seed_events <- data.frame(event = 1L,
                               time = as.integer(t),
                               node = as.integer(i),
                               dest = 1L,
                               n = as.integer(n),
                               proportion = 0,
-                              select = as.integer(type),
+                              select = 9L,
                               shift = 0L)
     events <- rbind(events, seed_events)
     model@events <- SimInf_events(model@events@E, model@events@N, events)

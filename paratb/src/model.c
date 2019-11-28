@@ -5,10 +5,10 @@
 #include "SimInf.h"
 
 /* Compartments */
-enum{S0, S1, T1H, T1L, S2, T2H, T2L, E2H, E2L, S3, E3H, E3L, L3H, L3L, H3, BL, BLp, BLn, BM, BMp, BMn};
+enum{S0, S1, T1H, T1L, S2, T2H, T2L, E2H, E2L, S3, E3H, E3L, L3H, L3L, H3, BM, BMp, BMn};
 
 enum{P1, GAMMA_E, GAMMA_L, GAMMA_H, BETA, BETA_A, PHI, ETA, SIGMA_H, SIGMA_L, NU, MU_B, RHO_1, MU_1,
-     RHO_2, MU_2, MU_3, MU_4, DELTA1, SE1, SP1, N1, INTERCEPT, COEF, DELTA2, SP2};
+     RHO_2, MU_2, MU_3, MU_4, INTERCEPT, COEF, DELTA2, SP2};
 
 /* Calculate the total number of adults in the population */
 int nadult(const int *u)
@@ -45,14 +45,6 @@ double fraction_infected_adults(const int *u)
     const double I3 = infected_adults(u);
     const double N3 = nadult(u);
     return I3 / N3;
-}
-
-double testing_intensity(const int *u, const double *gdata)
-{
-    const double I3 = infected_adults(u);
-    const double N3 = nadult(u);
-
-    return pow((I3 * (1.0 - gdata[SE1]) + u[S3] * gdata[SP1]) / N3, gdata[N1]);
 }
 
 /* The calculation of the bulk milk test sensitivity dependant on the
@@ -531,46 +523,6 @@ double trFun39(
      return gdata[MU_4]*u[H3];
 }
 
-/* Rate at which blood testing in individuals is scheduled by placing
- * a unit in the dummy BL compartment*/
-double trFun40(
-     const int *u,
-     const double *v,
-     const double *ldata,
-     const double *gdata,
-     double t)
-{
-     if (nadult(u) < 1)
-          return 0.0;
-     return gdata[DELTA1];
-}
-
-/* Rate at which the scheduled blood tests become positive populating the dummy BLp compartment*/
-double trFun41(
-     const int *u,
-     const double *v,
-     const double *ldata,
-     const double *gdata,
-     double t)
-{
-     if (nadult(u) < 1)
-          return 0.0;
-     return u[BL] * gdata[P1] * (1.0 - testing_intensity(u, gdata));
-}
-
-/* Rate at which the scheduled blood tests become negative populating the dummy BLn compartment*/
-double trFun42(
-     const int *u,
-     const double *v,
-     const double *ldata,
-     const double *gdata,
-     double t)
-{
-     if (nadult(u) < 1)
-          return 0.0;
-     return u[BL] * gdata[P1] * testing_intensity(u, gdata);
-}
-
 /* Rate at which bulk milk testing is scheduled by placing
  * a unit in the dummy BM compartment*/
 double trFun43(
@@ -635,8 +587,7 @@ SEXP SimInf_model_run(SEXP model, SEXP threads, SEXP solver)
                        &trFun19, &trFun20, &trFun21, &trFun22, &trFun23, &trFun24,
                        &trFun25, &trFun26, &trFun27, &trFun28, &trFun29, &trFun30,
                        &trFun31, &trFun32, &trFun33, &trFun34, &trFun35, &trFun36,
-                       &trFun37, &trFun38, &trFun39, &trFun40, &trFun41, &trFun42,
-                       &trFun43, &trFun44, &trFun45};
+                       &trFun37, &trFun38, &trFun39, &trFun43, &trFun44, &trFun45};
      DL_FUNC SimInf_run = R_GetCCallable("SimInf", "SimInf_run");
      return SimInf_run(model, threads, solver, tr_fun, &ptsFun);
 }

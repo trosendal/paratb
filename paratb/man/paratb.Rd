@@ -15,6 +15,3 @@ where the state of each node is to be returned.}
 \description{
 Create a model to be used by the SimInf framework.
 }
-\examples{
-## Please add example(s) how to use the model
-}

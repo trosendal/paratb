@@ -8,6 +8,7 @@
 ##' @param model The model that the random event should be added to
 ##' @param n The number of random events
 ##' @import Matrix
+##' @export
 ##' @return A model object
 random_events <- function(model, n) {
 

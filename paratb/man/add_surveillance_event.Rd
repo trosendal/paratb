@@ -4,8 +4,8 @@
 \alias{add_surveillance_event}
 \title{add_surveillance_events}
 \usage{
-add_surveillance_event(model, i, t = 1, type = c("blood", "milk"),
-  n = 1, events = as(model@events, "data.frame"))
+add_surveillance_event(model, i, t = 1, n = 1,
+  events = as(model@events, "data.frame"))
 }
 \arguments{
 \item{model}{The model object}
@@ -14,12 +14,12 @@ add_surveillance_event(model, i, t = 1, type = c("blood", "milk"),
 
 \item{t}{the timepoint that you want to do surveillance}
 
-\item{type}{One of either c("blood", "milk")}
-
 \item{n}{the number of animals to seed}
 
 \item{events}{A dataframe of the events the default is just to
 extract them from the model object.}
+
+\item{type}{One of either c("blood", "milk")}
 }
 \value{
 a paratb model object with some extra events

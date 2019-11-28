@@ -5,7 +5,7 @@
 \title{prev}
 \usage{
 prev(model, class = c("true", "calf", "heifer", "cow", "apparent",
-  "milk", "blood"), type = c("nop", "wnp"), herdtype = NULL, ...)
+  "milk"), type = c("nop", "wnp"), herdtype = NULL, ...)
 }
 \arguments{
 \item{model}{A paratb model object}

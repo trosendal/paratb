@@ -58,26 +58,6 @@ icow <- function() {
     "E3H + E3L + L3H + L3L + H3"
 }
 
-##' iblood
-##'
-##' A method to calculate the number of positive blood tests.
-##'
-##' @title iblood
-##' @return A character string
-iblood <- function() {
-    "BLp"
-}
-
-##' nblood
-##'
-##' A method to calculate the number of blood tests.
-##'
-##' @title nblood
-##' @return A character string
-nblood <- function() {
-    "BLp +BLn"
-}
-
 ##' imilk
 ##'
 ##' A method to calculate the number of positive milk tests.
@@ -105,7 +85,7 @@ nmilk <- function() {
 ##' @importFrom stats formula
 ##' @export
 ##' @author Thomas Rosendal
-prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "milk", "blood"))
+prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "milk"))
 {
     class <- match.arg(class)
     class <- switch(class,
@@ -132,12 +112,10 @@ prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "m
                                        ,
                     milk = paste(imilk(),     "~",
                                  nmilk())
-                                   ,
-                    blood = paste(iblood(),   "~",
-                                  nblood())
                     )
     return(formula(class))
 }
+
 ##' A method for calculating prevalance in a paratb model
 ##'
 ##' This just assembles the pieces to pass onto the SimInf::prevalance
@@ -156,7 +134,7 @@ prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "m
 ##' @export
 ##' @author Thomas Rosendal
 prev <- function(model,
-                 class = c("true", "calf", "heifer", "cow", "apparent", "milk", "blood"),
+                 class = c("true", "calf", "heifer", "cow", "apparent", "milk"),
                  type = c("nop", "wnp"),
                  herdtype = NULL,
                  ...)
@@ -167,6 +145,7 @@ prev <- function(model,
     class <- prev_class(class)
     SimInf::prevalence(model, class, type = type, node = i, ...)
 }
+
 ##' A method to count the number in some compartments.
 ##'
 ##'
@@ -187,7 +166,7 @@ prev <- function(model,
 ##' @export
 ##' @author Thomas Rosendal
 counti <- function(model,
-                   class = c("true", "calf", "heifer", "cow", "apparent", "milk", "blood", "nmilk"),
+                   class = c("true", "calf", "heifer", "cow", "apparent", "milk", "nmilk"),
                    type = c("nop", "wnp"),
                    herdtype = NULL)
 {
@@ -202,11 +181,8 @@ counti <- function(model,
                            calf = paste("~", icalf()),
                            heifer = paste("~", iheifer()),
                            cow = paste("~", icow()),
-                           apparent = paste("~", imilk(),   "+",
-                                                 iblood()
-                                                    ),
+                           apparent = paste("~", imilk()),
                            milk = paste("~", imilk()),
-                           blood = paste("~", iblood()),
                            nmilk = paste("~", nmilk())
                            )
     res <- trajectory(model, compartments = formula(compartments), node = i)
@@ -215,23 +191,6 @@ counti <- function(model,
     if(is.null(dim(resb))) resb <- matrix(resb, ncol = 1)
     data.frame(time = model@tspan,
                count = tapply(rowSums(resb) > 0, res$time, "sum"))
-}
-
-##' A method to select the type of herd in the herdtype dataset
-##'
-##' @title select_type
-##' @param type the herdtype.
-##' @importFrom utils data
-##' @return a vector of herd IDs
-##' @export
-select_type <- function(type = c("all", "dairy", "beef"))
-{
-    if(is.null(type)) return(NULL)
-    type <- match.arg(type)
-    data("herdtype", package = "paratb", envir = environment())
-    if(type == "all")
-        return(herdtype$ID)
-    herdtype$ID[herdtype$type == type]
 }
 
 ##' A method to count the number of herds missed by the surveillance

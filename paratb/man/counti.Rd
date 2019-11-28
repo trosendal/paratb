@@ -5,7 +5,7 @@
 \title{counti}
 \usage{
 counti(model, class = c("true", "calf", "heifer", "cow", "apparent",
-  "milk", "blood", "nmilk"), type = c("nop", "wnp"), herdtype = NULL)
+  "milk", "nmilk"), type = c("nop", "wnp"), herdtype = NULL)
 }
 \arguments{
 \item{model}{A paratb model object}

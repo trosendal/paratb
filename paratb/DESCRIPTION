@@ -1,0 +1,19 @@
+Package: paratb
+Type: Package
+Title: Model ('paratb') Interface to the 'SimInf' Package
+Version: 1.0
+Author: Thomas Rosendal
+Maintainer: Thomas Rosendal <trosendal@sva.se>
+Description: This is a simplified version of the paratb model built for publication.
+License: GPL-3
+NeedsCompilation: yes
+Depends: R(>= 3.1),
+         SimInf(>= 5.1.0.9000)
+Imports: methods, Matrix, utils, stats
+LinkingTo: SimInf
+LazyData: true
+Collate:
+    'model.R'
+    'init.R'
+    'summary.R'
+RoxygenNote: 6.1.1

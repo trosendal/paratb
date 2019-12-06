@@ -12,7 +12,7 @@ License: GPL-3
 NeedsCompilation: yes
 Depends: R(>= 3.1),
          SimInf(>= 5.1.0.9000)
-Imports: methods, Matrix, utils, stats
+Imports: methods, Matrix, stats
 LinkingTo: SimInf
 LazyData: true
 Collate:

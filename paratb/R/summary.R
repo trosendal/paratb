@@ -105,10 +105,8 @@ prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "m
                     cow = paste(icow(),   "~",
                                 ncow())
                                   ,
-                    apparent = paste(imilk(),   "+",
-                                     iblood(),  "~",
-                                     nmilk(),   "+",
-                                     nblood())
+                    apparent = paste(imilk(), "~",
+                                     nmilk())
                                        ,
                     milk = paste(imilk(),     "~",
                                  nmilk())

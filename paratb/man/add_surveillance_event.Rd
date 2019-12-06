@@ -23,8 +23,6 @@ add_surveillance_event(
 
 \item{events}{A dataframe of the events the default is just to
 extract them from the model object.}
-
-\item{type}{One of either c("blood", "milk")}
 }
 \value{
 a paratb model object with some extra events

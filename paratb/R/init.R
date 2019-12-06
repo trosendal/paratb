@@ -8,6 +8,7 @@
 ##' @param model The model that the random event should be added to
 ##' @param n The number of random events
 ##' @import Matrix
+##' @importFrom stats runif
 ##' @export
 ##' @return A model object
 random_events <- function(model, n) {
@@ -168,7 +169,6 @@ seed_herd <- function(model,
 ##' @param model The model object
 ##' @param i the node to add a surveillance event to
 ##' @param t the timepoint that you want to do surveillance
-##' @param type One of either c("blood", "milk")
 ##' @param n the number of animals to seed
 ##' @param events A dataframe of the events the default is just to
 ##'     extract them from the model object.

@@ -125,9 +125,6 @@ prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "m
 ##' @param model A paratb model object
 ##' @param class The age category or sample type that you want the
 ##'     prevalance from
-##' @param herdtype Accepts NULL, "all", "dairy" or "beef". NULL and
-##'     "all" are equivalent except that NULL submits NULL to
-##'     SimInf::prevalence and "all" submits a vector of the nodes.
 ##' @param type the type pf prevalance
 ##' @param ... Other arguments
 ##' @return A data.frame from the SimInf::prevalance method
@@ -136,14 +133,12 @@ prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "m
 prev <- function(model,
                  class = c("true", "calf", "heifer", "cow", "apparent", "milk"),
                  type = c("nop", "wnp"),
-                 herdtype = NULL,
                  ...)
 {
     type <- match.arg(type)
     class <- match.arg(class)
-    i <- select_type(herdtype)
     class <- prev_class(class)
-    SimInf::prevalence(model, class, type = type, node = i, ...)
+    SimInf::prevalence(model, class, type = type, ...)
 }
 
 ##' A method to count the number in some compartments.
@@ -155,9 +150,6 @@ prev <- function(model,
 ##' @param model A paratb model object
 ##' @param class The age category or sample type that you want the
 ##'     prevalance from
-##' @param herdtype Accepts NULL, "all", "dairy" or "beef". NULL and
-##'     "all" are equivalent except that NULL submits NULL to
-##'     SimInf::trajectory and "all" submits a vector of the nodes.
 ##' @param type The type of prevalence
 ##' @return A data.frame from the SimInf::prevalance method
 ##' @param ... Other arguments
@@ -167,12 +159,10 @@ prev <- function(model,
 ##' @author Thomas Rosendal
 counti <- function(model,
                    class = c("true", "calf", "heifer", "cow", "apparent", "milk", "nmilk"),
-                   type = c("nop", "wnp"),
-                   herdtype = NULL)
+                   type = c("nop", "wnp"))
 {
     type <- match.arg(type)
     class <- match.arg(class)
-    i <- select_type(herdtype)
     compartments <- switch(class,
                            true = paste("~", icalf(),   "+",
                                              iheifer(), "+",
@@ -185,7 +175,7 @@ counti <- function(model,
                            milk = paste("~", imilk()),
                            nmilk = paste("~", nmilk())
                            )
-    res <- trajectory(model, compartments = formula(compartments), node = i)
+    res <- trajectory(model, compartments = formula(compartments))
     if(type == "wnp") return(res)
     resb <- res[,!(names(res) %in% c("node", "time"))]
     if(is.null(dim(resb))) resb <- matrix(resb, ncol = 1)

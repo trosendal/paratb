@@ -2,7 +2,7 @@
 title: "Run the paratuberculosis model in a cattle herd"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Run the paratuberculosis model in a fake cattle herd}
+  %\VignetteIndexEntry{Model_Example}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---

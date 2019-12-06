@@ -12,6 +12,10 @@ PKG_TAR=$(PKG_NAME)_$(PKG_VERSION).tar.gz
 install:
 	cd .. && R CMD INSTALL $(PKG_NAME)
 
+# Install package with vignette
+install_full:build
+	cd .. && R CMD INSTALL $(PKG_TAR)
+
 # Build documentation with roxygen
 # 1) Check version of roxygen2 before building documentation
 # 2) Remove old doc
@@ -37,8 +41,8 @@ build: clean
 
 # Build and check package
 check_full: clean
-	cd .. && R CMD build $(PKG_NAME)
-	cd .. && R CMD check $(PKG_TAR)
+	cd .. && R CMD build $(PKG_NAME) --compact-vignettes
+	cd .. && R CMD check $(PKG_TAR) --as-cran
 
 
 clean:

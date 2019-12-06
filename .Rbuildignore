@@ -1,2 +1,5 @@
 ^Makefile$
 vignettes/Makefile
+vignettes/model_cache
+vignettes/model_files
+vignettes/model.html

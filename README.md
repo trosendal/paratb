@@ -15,9 +15,17 @@ install_github("trosendal/paratb")
 
 ## Usage
 
-Have a look at the vignette like this:
+The usage of the model is described in a vignette that accompanies the
+package. You should be able to view the vignette web page like this:
 
 ```{r}
 library(paratb)
 vignette("model", package = "paratb")
+```
+
+On MS Windows you may need to do this to see the vignette:
+
+```{r}
+library(paratb)
+browseURL(system.file(package = "paratb", "doc/model.html"))
 ```

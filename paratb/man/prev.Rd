@@ -4,8 +4,12 @@
 \alias{prev}
 \title{prev}
 \usage{
-prev(model, class = c("true", "calf", "heifer", "cow", "apparent",
-  "milk"), type = c("nop", "wnp"), herdtype = NULL, ...)
+prev(
+  model,
+  class = c("true", "calf", "heifer", "cow", "apparent", "milk"),
+  type = c("nop", "wnp"),
+  ...
+)
 }
 \arguments{
 \item{model}{A paratb model object}
@@ -14,10 +18,6 @@ prev(model, class = c("true", "calf", "heifer", "cow", "apparent",
 prevalance from}
 
 \item{type}{the type pf prevalance}
-
-\item{herdtype}{Accepts NULL, "all", "dairy" or "beef". NULL and
-"all" are equivalent except that NULL submits NULL to
-SimInf::prevalence and "all" submits a vector of the nodes.}
 
 \item{...}{Other arguments}
 }

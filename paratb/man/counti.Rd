@@ -4,8 +4,11 @@
 \alias{counti}
 \title{counti}
 \usage{
-counti(model, class = c("true", "calf", "heifer", "cow", "apparent",
-  "milk", "nmilk"), type = c("nop", "wnp"), herdtype = NULL)
+counti(
+  model,
+  class = c("true", "calf", "heifer", "cow", "apparent", "milk", "nmilk"),
+  type = c("nop", "wnp")
+)
 }
 \arguments{
 \item{model}{A paratb model object}
@@ -14,10 +17,6 @@ counti(model, class = c("true", "calf", "heifer", "cow", "apparent",
 prevalance from}
 
 \item{type}{The type of prevalence}
-
-\item{herdtype}{Accepts NULL, "all", "dairy" or "beef". NULL and
-"all" are equivalent except that NULL submits NULL to
-SimInf::trajectory and "all" submits a vector of the nodes.}
 
 \item{...}{Other arguments}
 }

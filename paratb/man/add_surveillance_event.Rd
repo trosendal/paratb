@@ -4,8 +4,13 @@
 \alias{add_surveillance_event}
 \title{add_surveillance_events}
 \usage{
-add_surveillance_event(model, i, t = 1, n = 1,
-  events = as(model@events, "data.frame"))
+add_surveillance_event(
+  model,
+  i,
+  t = 1,
+  n = 1,
+  events = as(model@events, "data.frame")
+)
 }
 \arguments{
 \item{model}{The model object}

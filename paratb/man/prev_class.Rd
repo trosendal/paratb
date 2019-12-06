@@ -4,8 +4,7 @@
 \alias{prev_class}
 \title{prevclass}
 \usage{
-prev_class(class = c("true", "calf", "heifer", "cow", "apparent",
-  "milk"))
+prev_class(class = c("true", "calf", "heifer", "cow", "apparent", "milk"))
 }
 \arguments{
 \item{class}{Age class of the prevalence}

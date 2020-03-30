@@ -150,7 +150,6 @@ prev <- function(model,
 ##'     prevalance from
 ##' @param type The type of prevalence
 ##' @return A data.frame from the SimInf::prevalance method
-##' @param ... Other arguments
 ##' @return A data.frame from the SimInf::prevalance method
 ##' @importFrom stats formula
 ##' @export

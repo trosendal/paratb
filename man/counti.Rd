@@ -17,8 +17,6 @@ counti(
 prevalance from}
 
 \item{type}{The type of prevalence}
-
-\item{...}{Other arguments}
 }
 \value{
 A data.frame from the SimInf::prevalance method

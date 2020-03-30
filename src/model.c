@@ -8,7 +8,7 @@
 enum{S0, S1, T1H, T1L, S2, T2H, T2L, E2H, E2L, S3, E3H, E3L, L3H, L3L, H3, BM, BMp, BMn};
 
 enum{P1, GAMMA_E, GAMMA_L, GAMMA_H, BETA, BETA_A, PHI, ETA, SIGMA_H, SIGMA_L, NU, MU_B, RHO_1, MU_1,
-     RHO_2, MU_2, MU_3, MU_4, INTERCEPT, COEF, DELTA2, SP2};
+     RHO_2, MU_2, MU_3, MU_4, INTERCEPT, COEF, DELTA2, SP2, IND_SE};
 
 /* Calculate the total number of adults in the population */
 int nadult(const int *u)
@@ -51,7 +51,7 @@ double fraction_infected_adults(const int *u)
  * number of animals positive contributing to the milk. */
 double bulk_milk_sensitivity(const int *u, const double* gdata)
 {
-    const double fi = fraction_infected_adults(u);
+    const double fi = fraction_infected_adults(u) * gdata[IND_SE];
     const double k = gdata[COEF];
     const double m = gdata[INTERCEPT];
     const double y = k * -log2(fi) + m;

@@ -215,13 +215,13 @@ paratb <- function(u0 = NULL, tspan = NULL) {
                          0.00145205, 0.00468493, 0.00123288,
                          0.00273973, 0.000246575, 0.00273973,
                          2.73973e-05, 0.00112329, 0.000136986,
-                         7.980511, -2.048039, 0, 1),
+                         7.980511, -2.048039, 0, 1, 0.6269236),
                        .Names = c("p1", "gamma_E", "gamma_L",
                                   "gamma_H", "beta", "beta_a", "phi",
                                   "eta", "sigma_H", "sigma_L", "nu",
                                   "mu_b", "rho_1", "mu_1", "rho_2",
                                   "mu_2", "mu_3", "mu_4", "intercept",
-                                  "coef", "delta2", "Sp2"))
+                                  "coef", "delta2", "Sp2", "IND_SE"))
 
     model <- SimInf_model(G      = G,
                           S      = S,

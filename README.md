@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/trosendal/paratb.svg?branch=master)](https://travis-ci.org/trosendal/paratb)
 # paratb
 
 This is an R package of an infectious disease model of

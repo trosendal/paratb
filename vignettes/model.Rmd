@@ -14,8 +14,17 @@ and its dependencies. There is a 'Makefile' in the root of the package
 that contains the instructions to build a install the package. Then
 you may load the package:
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 library(paratb)
+```
+
+To ensure this script is reproducible, we can set the seed and
+restrict the number of threads that SimInf uses to 1:
+
+
+```{r, warning = FALSE, message = FALSE}
+set.seed(42)
+set_num_threads(1)
 ```
 ## Initialise the model.
 
@@ -35,7 +44,7 @@ model <- paratb(tspan = seq(1, 10*365, 90))
 
 ## Seed infection in 0.2% of the herds
 
-In the study model we seeded infection 2% of animals in 0.2% of
+In the study model, we seeded infection 2% of animals in 0.2% of
 herds. We will do the same seeding in this model:
 
 ```{r, warning = FALSE}
@@ -58,8 +67,9 @@ model <- seed_herd(model,
 
 In the study model, we used approximately 15 million industry-recorded
 animal movements to reflect the real Swedish population over 13
-years. For this model we will add 1 million random events to send
-some animals around between herds.
+years. Because we cannot share that real movement data, for the sake
+of illustration, we will add 1 million random events to send some
+animals around between herds.
 
 ```{r, warning = FALSE, cache=TRUE}
 model <- random_events(model, 1000000)
@@ -67,11 +77,7 @@ model <- random_events(model, 1000000)
 Now we have an initialised model object, ready to run a spread
 simulation and look at the results. First run the model:
 
-```{r, eval=FALSE, echo=TRUE}
-result <- run(model)
-```
-```{r, eval=TRUE, echo=FALSE}
-set.seed(99)
+```{r}
 result <- run(model)
 ```
 
@@ -90,7 +96,7 @@ plot(df$time,
 
 ## Add surveillance to the model
 
-In the study model we added surveillance events to the model to study
+In the study model, we added surveillance events to the model to study
 various herd selection strategies and numbers of herds tested per year
 with a bulk milk ELISA for paratuberculosis. Now run the same model
 but inject bulk milk sampling events in 1000 herds per year and
@@ -114,13 +120,10 @@ model <- add_surveillance_event(model,
 ```
 Run the model again but with the surveillance additional surveillance events:
 
-```{r, eval=FALSE, echo=TRUE}
+```{r}
 result <- run(model)
 ```
-```{r, eval=TRUE, echo=FALSE}
-set.seed(99)
-result <- run(model)
-```
+
 Extract the data we need about the herd status and the detection
 status and plot it. In the study model we summarised this result over
 many trajectories to determine the likely efficacy of the
@@ -143,3 +146,9 @@ lines(df_bulk_milk$time,
      col = "#939393",
      lty = 2)
 ```
+
+## Session Information
+
+This vignette was generated with paratb package version
+`r packageVersion("paratb")`, SimInf version
+`r packageVersion("SimInf")` and `r version$version.string`.

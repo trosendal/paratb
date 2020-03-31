@@ -1,14 +1,10 @@
 language: r
-warnings_are_errors: false
-sudo: required
+warnings_are_errors: true
 
-before_install:
-
-r_packages:
-  - covr
-
-after_success:
-  - Rscript -e "library(covr); coveralls()"
+addons:
+  apt:
+    packages:
+      - libgsl0-dev
 
 notifications:
   email:

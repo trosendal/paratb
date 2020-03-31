@@ -5,6 +5,16 @@ addons:
   apt:
     packages:
       - libgsl0-dev
+      - devscripts
+
+after_failure:
+  - cat "${RCHECK_DIR}/00install.out"
+
+after_success:
+  - test ${R_CODECOV} && Rscript -e "covr::coveralls()"
+  - test ${R_LINTR} && R CMD INSTALL $PKG_TARBALL
+  - test ${R_LINTR} && Rscript -e "lintr::lint_package(linters = lintr::with_defaults(object_name_linter = NULL, object_usage_linter = NULL))"
+  - cat "${RCHECK_DIR}/00install.out"
 
 notifications:
   email:

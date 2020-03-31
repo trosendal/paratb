@@ -20,11 +20,11 @@ random_events <- function(model, n) {
     time <- sample(seq(min(model@tspan), max(model@tspan)), n, replace = TRUE)
 
     ## sample pairs of nodes for node and dest
-    nodes <- sapply(1:n, function(i){
+    nodes <- sapply(1:n, function(i) {
         sample(seq_len(ncol(model@u0)), 2, replace = FALSE)
     })
-    node <- nodes[1,]
-    dest <- nodes[2,]
+    node <- nodes[1, ]
+    dest <- nodes[2, ]
 
     ## n is just any number because we will use the proportion
     number <- 1L
@@ -129,10 +129,10 @@ seed_herd <- function(model,
                       i,
                       age = c("calf", "heifer", "cow"),
                       n,
-                      seed = NULL)
-{
-    if(!is.null(seed)) {
-        if(exists(".Random.seed")) {
+                      seed = NULL) {
+
+    if (!is.null(seed)) {
+        if (exists(".Random.seed")) {
             savedSeed = .Random.seed
             on.exit(.Random.seed <<- savedSeed)
         }
@@ -147,7 +147,7 @@ seed_herd <- function(model,
     ## Move animals to a random infected compartment until you are
     ## done or have no more susceptibles available in that age
     ## category:
-    while(model@u0[age[1], i] > 0 & n > 0) {
+    while (model@u0[age[1], i] > 0 & n > 0) {
         dest <- sample(age[-1], 1)
         model@u0[dest, i] <- model@u0[dest, i] + 1L
         model@u0[age[1], i] <- model@u0[age[1], i] - 1L
@@ -179,8 +179,8 @@ add_surveillance_event <- function(model,
                                    i,
                                    t = 1,
                                    n = 1,
-                                   events = as(model@events, "data.frame"))
-{
+                                   events = as(model@events, "data.frame")) {
+
     ## And turn off the stochastic samplings events
     model@gdata["delta2"] <- 0
     seed_events <- data.frame(event = 1L,

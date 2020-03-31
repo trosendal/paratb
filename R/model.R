@@ -21,12 +21,12 @@ paratb <- function(u0 = NULL, tspan = NULL) {
                       "H3", "BM", "BMp", "BMn")
 
     ## Check tspan (if null, make it 1 year)
-    if(is.null(tspan)) {
+    if (is.null(tspan)) {
         tspan <- 1:365
     }
 
     ## Check u0
-    if(!is.null(u0)) {
+    if (!is.null(u0)) {
         if (!is.data.frame(u0))
             u0 <- as.data.frame(u0)
         if (!all(compartments %in% names(u0)))
@@ -117,7 +117,8 @@ paratb <- function(u0 = NULL, tspan = NULL) {
                    87L, 94L, 101L, 111L, 121L, 131L, 141L, 156L, 172L,
                    188L, 205L, 222L, 229L, 237L, 245L, 252L, 259L,
                    274L, 291L, 307L, 324L, 337L, 351L, 365L, 380L,
-                   394L, 408L, 424L, 439L, 454L, 456L, 458L, 460L), Dim = c(42L, 42L),
+                   394L, 408L, 424L, 439L, 454L, 456L, 458L, 460L),
+             Dim = c(42L, 42L),
              Dimnames = list(c("@ -> S0", "S0 -> S1", "S0 -> T1H",
                                "S0 -> T1L", "S1 -> T1H", "S1 -> T1L",
                                "S1 -> S2", "T1H -> T2H", "T1L -> T2L",
@@ -249,8 +250,8 @@ paratb <- function(u0 = NULL, tspan = NULL) {
 ##' @useDynLib paratb, .registration=TRUE
 setMethod("run",
     signature(model = "paratb"),
-    function(model, threads = NULL, solver = NULL)
-    {
+    function(model, threads = NULL, solver = NULL) {
+
         methods::validObject(model)
         .Call(SimInf_model_run, model, threads, solver,
               PACKAGE = "paratb")

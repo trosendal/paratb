@@ -85,8 +85,13 @@ nmilk <- function() {
 ##' @importFrom stats formula
 ##' @export
 ##' @author Thomas Rosendal
-prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "milk"))
-{
+prev_class <- function(class = c("true",
+                                 "calf",
+                                 "heifer",
+                                 "cow",
+                                 "apparent",
+                                 "milk")) {
+
     class <- match.arg(class)
     class <- switch(class,
                     true = paste(icalf(),   "+",
@@ -131,8 +136,8 @@ prev_class <- function(class = c("true", "calf", "heifer", "cow", "apparent", "m
 prev <- function(model,
                  class = c("true", "calf", "heifer", "cow", "apparent", "milk"),
                  type = c("nop", "wnp"),
-                 ...)
-{
+                 ...) {
+
     type <- match.arg(type)
     class <- match.arg(class)
     class <- prev_class(class)
@@ -155,9 +160,16 @@ prev <- function(model,
 ##' @export
 ##' @author Thomas Rosendal
 counti <- function(model,
-                   class = c("true", "calf", "heifer", "cow", "apparent", "milk", "nmilk"),
-                   type = c("nop", "wnp"))
-{
+                   class = c("true",
+                             "calf",
+                             "heifer",
+                             "cow",
+                             "apparent",
+                             "milk",
+                             "nmilk"),
+                   type = c("nop",
+                            "wnp")) {
+
     type <- match.arg(type)
     class <- match.arg(class)
     compartments <- switch(class,
@@ -173,9 +185,9 @@ counti <- function(model,
                            nmilk = paste("~", nmilk())
                            )
     res <- trajectory(model, compartments = formula(compartments))
-    if(type == "wnp") return(res)
-    resb <- res[,!(names(res) %in% c("node", "time"))]
-    if(is.null(dim(resb))) resb <- matrix(resb, ncol = 1)
+    if (type == "wnp") return(res)
+    resb <- res[, !(names(res) %in% c("node", "time"))]
+    if (is.null(dim(resb))) resb <- matrix(resb, ncol = 1)
     data.frame(time = model@tspan,
                count = tapply(rowSums(resb) > 0, res$time, "sum"))
 }
@@ -187,15 +199,16 @@ counti <- function(model,
 ##' @return A data.frame
 ##' @export
 ##' @author Thomas Rosendal
-missed <- function(model)
-{
+missed <- function(model) {
+
     true_state <- counti(model, "true", "wnp")
-    true_state$pos <- rowSums(true_state[,!(names(true_state) %in% c("node", "time"))])
+    true_state$pos <- rowSums(true_state[, !(names(true_state) %in% c("node", "time"))])
     test_state <- counti(model, "apparent", "wnp")
-    test_state$pos <- rowSums(test_state[,!(names(test_state) %in% c("node", "time"))])
+    test_state$pos <- rowSums(test_state[, !(names(test_state) %in% c("node", "time"))])
     true_state$missed <- true_state$pos > 0 & test_state$pos == 0
     data.frame(time = model@tspan,
-               count = tapply(true_state$missed > 0, true_state$time, "sum"), stringsAsFactors = FALSE)
+               count = tapply(true_state$missed > 0, true_state$time, "sum"),
+               stringsAsFactors = FALSE)
 }
 
 ##' A method to list the positive herds for each tstep
@@ -205,15 +218,16 @@ missed <- function(model)
 ##' @return A data.frame
 ##' @export
 ##' @author Thomas Rosendal
-which_pos <- function(model)
-{
+which_pos <- function(model) {
+
     true_state <- counti(model, "true", "wnp")
-    true_state$pos <- rowSums(true_state[,!(names(true_state) %in% c("node", "time"))])
+    true_state$pos <- rowSums(true_state[, !(names(true_state) %in% c("node", "time"))])
     data.frame(time = model@tspan,
-               pos = do.call("c", lapply(unique(true_state$time), function(x){
-                   paste(c("herds:", true_state$node[true_state$time == x & true_state$pos > 0]), collapse = ",")
-               })), stringsAsFactors = FALSE
-               )
+               pos = do.call("c", lapply(unique(true_state$time), function(x) {
+                   paste(c("herds:",
+                           true_state$node[true_state$time == x & true_state$pos > 0]),
+                         collapse = ",")
+               })), stringsAsFactors = FALSE)
 }
 
 ##' A method to list the detected herds for each tstep
@@ -223,13 +237,13 @@ which_pos <- function(model)
 ##' @return A data.frame
 ##' @export
 ##' @author Thomas Rosendal
-which_test_pos <- function(model)
-{
+which_test_pos <- function(model) {
     test_state <- counti(model, "apparent", "wnp")
     test_state$pos <- rowSums(test_state[,!(names(test_state) %in% c("node", "time"))])
     data.frame(time = model@tspan,
-               pos = do.call("c", lapply(unique(test_state$time), function(x){
-                   paste(c("herds:", test_state$node[test_state$time == x & test_state$pos > 0]), collapse = ",")
-               })), stringsAsFactors = FALSE
-               )
+               pos = do.call("c", lapply(unique(test_state$time), function(x) {
+                   paste(c("herds:",
+                           test_state$node[test_state$time == x & test_state$pos > 0]),
+                         collapse = ",")
+               })), stringsAsFactors = FALSE)
 }

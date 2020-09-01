@@ -4,13 +4,10 @@
 \alias{run,paratb-method}
 \title{Run the model}
 \usage{
-\S4method{run}{paratb}(model, threads = NULL, solver = NULL)
+\S4method{run}{paratb}(model, solver = NULL)
 }
 \arguments{
 \item{model}{The model to run.}
-
-\item{threads}{Number of threads. Default is NULL, i.e. to use all
-available processors.}
 
 \item{solver}{Which numerical solver to utilize. Default is 'ssa'.}
 }

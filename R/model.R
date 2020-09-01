@@ -242,17 +242,14 @@ paratb <- function(u0 = NULL, tspan = NULL) {
 ##'
 ##' @rdname run-methods
 ##' @param model The model to run.
-##' @param threads Number of threads. Default is NULL, i.e. to use all
-##'     available processors.
 ##' @param solver Which numerical solver to utilize. Default is 'ssa'.
 ##' @return model with result from simulation.
 ##' @export
 ##' @useDynLib paratb, .registration=TRUE
 setMethod("run",
     signature(model = "paratb"),
-    function(model, threads = NULL, solver = NULL) {
+    function(model, solver = NULL) {
 
         methods::validObject(model)
-        .Call(SimInf_model_run, model, threads, solver,
-              PACKAGE = "paratb")
+        .Call(paratb_run, model, solver)
     })

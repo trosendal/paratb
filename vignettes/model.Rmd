@@ -153,6 +153,7 @@ lines(df_bulk_milk$time,
      col = "#939393",
      lty = 2)
 ```
+
 ## A single herd model
 
 ```{r, warning = FALSE}

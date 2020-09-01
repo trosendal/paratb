@@ -44,7 +44,6 @@ check_full: clean
 	cd .. && R CMD build $(PKG_NAME) --compact-vignettes
 	cd .. && R CMD check $(PKG_TAR) --as-cran
 
-
 clean:
 	-rm -f src/*.o
 	-rm -f src/*.so

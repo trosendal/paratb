@@ -1,8 +1,9 @@
-Encoding: UTF-8
 Package: paratb
 Title: Infectious Disease Model of Paratuberculosis in a Cattle Herd
-Version: 1.0
-Author: Thomas Rosendal
+Version: 1.1
+Authors@R: person("Thomas", "Rosendal", role = c("aut", "cre"),
+                  email = "trosendal@gmail.com",
+                  comment = c(ORCID = "0000-0002-6576-9668"))
 Maintainer: Thomas Rosendal <thomas.rosendal@sva.se>
 Description: An infectious disease model of paratuberculosis (MAP) in
              a single cattle herd used for the analysis of spread of
@@ -11,18 +12,19 @@ Description: An infectious disease model of paratuberculosis (MAP) in
 License: GPL-3
 Type: Package
 NeedsCompilation: yes
-Depends: R(>= 3.1),
-         SimInf(>= 5.1.0.9000)
-Imports: methods, Matrix, stats
+Depends: R(>= 3.3),
+         SimInf(>= 7.0.1)
+Imports: methods,
+         Matrix,
+         stats
+Suggests: knitr,
+          rmarkdown
+VignetteBuilder: knitr
 LinkingTo: SimInf
 LazyLoad: yes
 Collate:
     'model.R'
     'init.R'
     'summary.R'
+Encoding: UTF-8
 RoxygenNote: 7.1.1
-Suggests:
-    knitr,
-    rmarkdown
-VignetteBuilder:
-    knitr

@@ -156,40 +156,58 @@ lines(df_bulk_milk$time,
 
 ## A single herd model
 
+The following is an example of the model run in a single holding with
+200 animals of which 5 infected adults are added to the "H3"
+compartment at day-0 and the model is allowed to run for 20 years. In
+this example we run 10000 trajectories of this single herd.
+
 ```{r, warning = FALSE}
 library(paratb)
 model <- paratb()
 model@u0["H3",] <- 5L
 model@tspan <- seq(1, 365*20, by = 90)
 model_result <- run(model)
+```
+
+We can then extract and the outcome from each of the trajectories of
+the model and summarize the within herd prevalence over time:
+
+```{r, warning = FALSE}
 traj <- paratb::prev(model_result, "true", "wnp")
 med <- tapply(traj$prevalence, traj$time, median)
 low95 <- tapply(traj$prevalence, traj$time, function(x) {
-    quantile(x, 0.05)
+    quantile(x, 0.025)
 })
 high95 <- tapply(traj$prevalence, traj$time, function(x) {
-    quantile(x, 0.95)
+    quantile(x, 0.975)
 })
 regiony <- c(low95, rev(high95), low95[1])
 regionx <- names(regiony)
-xyears <- as.POSIXlt(as.Date(as.numeric(names(med)), origin = "1900-01-01"))$year
+x <- seq(0, 20*365, 365)
+xyears <- 0:20
+```
+
+And finally plot the median result of the within herd prevalence and a
+credibility interval illustrating the central 95% of trajectories in
+the experiment over time:
+
+```{r, warning = FALSE}
 plot(x = names(med),
      y = med,
      pch = 20,
      type = "l",
-     ylim = c(0, 0.05),
+     ylim = c(0, 0.2),
      xaxt = "n",
-     xlab = "",
+     xlab = "Time in years",
      ylab = "Within herd prevalence",
      main = "", cex.axis = 1, cex.lab = 1, cex.main = 1.5, font.main = 1)
 polygon(regionx, regiony, col = "#0000001A", border = NA)
 axis(side = 1,
-     at = as.numeric(names(med))[c(TRUE, rep(FALSE, 23))],
-     labels = xyears[c(TRUE, rep(FALSE, 23))],
+     at = x,
+     labels = xyears,
      cex.axis = 1, cex.lab = 1, cex.main = 1)
 
 ```
-
 
 ## Session Information
 

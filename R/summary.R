@@ -139,9 +139,10 @@ prev <- function(model,
                  ...) {
 
     type <- match.arg(type)
+    type <- as.numeric(factor(type, levels = c("pop", "nop", "wnp")))
     class <- match.arg(class)
     class <- prev_class(class)
-    SimInf::prevalence(model, class, type = type, ...)
+    SimInf::prevalence(model, class, level = type, ...)
 }
 
 ##' A method to count the number in some compartments.
@@ -171,6 +172,7 @@ counti <- function(model,
                             "wnp")) {
 
     type <- match.arg(type)
+    type <- as.numeric(factor(type, levels = c("pop", "nop", "wnp")))
     class <- match.arg(class)
     compartments <- switch(class,
                            true = paste("~", icalf(),   "+",
@@ -185,7 +187,7 @@ counti <- function(model,
                            nmilk = paste("~", nmilk())
                            )
     res <- trajectory(model, compartments = formula(compartments))
-    if (type == "wnp") return(res)
+    if (type == 3) return(res)
     resb <- res[, !(names(res) %in% c("node", "time"))]
     if (is.null(dim(resb))) resb <- matrix(resb, ncol = 1)
     data.frame(time = model@tspan,

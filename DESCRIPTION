@@ -2,7 +2,7 @@ Package: paratb
 Title: Infectious Disease Model of Paratuberculosis in a Cattle Herd
 Version: 1.1
 Authors@R: person("Thomas", "Rosendal", role = c("aut", "cre"),
-                  email = "trosendal@gmail.com",
+                  email = "thomas.rosendal@sva.se",
                   comment = c(ORCID = "0000-0002-6576-9668"))
 Maintainer: Thomas Rosendal <thomas.rosendal@sva.se>
 Description: An infectious disease model of paratuberculosis (MAP) in
@@ -13,7 +13,7 @@ License: GPL-3
 Type: Package
 NeedsCompilation: yes
 Depends: R(>= 3.3),
-         SimInf(>= 7.0.1)
+         SimInf(>= 8.0)
 Imports: methods,
          Matrix,
          stats

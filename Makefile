@@ -39,6 +39,11 @@ check: clean
 build: clean
 	cd .. && R CMD build $(PKG_NAME)
 
+# Generate README
+README.md: README.Rmd
+	Rscript -e "library(knitr); knit('README.Rmd')"
+	rm -rf cache/
+
 # Build and check package
 check_full: clean
 	cd .. && R CMD build $(PKG_NAME) --compact-vignettes

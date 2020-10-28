@@ -32,29 +32,21 @@ The `paratb` package is licensed under the
 Use the `remotes` package to install the package and its dependency from
 github like this:
 
-
-```r
+```{r}
 library("remotes")
 install_github("trosendal/paratb")
 ```
 
-```
-## Skipping install of 'paratb' from a github remote, the SHA1 (87ec5fcd) has not changed since last install.
-##   Use `force = TRUE` to force installation
-```
-
 ## Load the library
 
-
-```r
+```{r, warning = FALSE, message = FALSE}
 library(paratb)
 ```
 
 To ensure this script is reproducible, we can set the seed and
 restrict the number of threads that SimInf uses to 1:
 
-
-```r
+```{r, warning = FALSE, message = FALSE}
 set.seed(42)
 set_num_threads(1)
 ```
@@ -69,8 +61,7 @@ structured 'data.frame'. Here we initialise the model with the
 default fake herds and specify that we want to model over 10 years,
 with reported results every 90 days:
 
-
-```r
+```{r, warning = FALSE}
 model <- paratb(tspan = seq(1, 10*365, 90))
 ```
 
@@ -79,8 +70,7 @@ model <- paratb(tspan = seq(1, 10*365, 90))
 In the study model, we seeded infection 2% of animals in 0.2% of
 herds. We will do the same seeding in this model:
 
-
-```r
+```{r, warning = FALSE}
 for(i in seq_len(ncol(model@u0)*0.002)) {
 model <- seed_herd(model,
                    i,
@@ -104,21 +94,18 @@ years. Because we cannot share that real movement data, for the sake
 of illustration, we will add 1 million random events to send some
 animals around between herds.
 
-
-```r
+```{r, warning = FALSE, cache=TRUE}
 model <- random_events(model, 1000000)
 ```
 Now we have an initialised model object, ready to run a spread
 simulation and look at the results. First run the model:
 
-
-```r
+```{r}
 result <- run(model)
 ```
 
 Then extract and plot the number of infected herds over time:
-
-```r
+```{r, warning = FALSE, results = 'asis', fig.width= 8, fig.height = 6}
 df <- counti(result, "true")
 
 plot(df$time,
@@ -129,8 +116,6 @@ plot(df$time,
      xlab = "Time in days")
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
-
 
 ## Add surveillance to the model
 
@@ -140,8 +125,7 @@ with a bulk milk ELISA for paratuberculosis. Now run the same model
 but inject bulk milk sampling events in 1000 herds per year and
 monitor the outcome of that compared to the disease.
 
-
-```r
+```{r, eval=TRUE, echo=TRUE}
 years <- max(model@tspan)/365
 
 herds_for_surveillance <- sample(seq_len(ncol(model@u0)),
@@ -159,8 +143,7 @@ model <- add_surveillance_event(model,
 ```
 Run the model again but with the surveillance additional surveillance events:
 
-
-```r
+```{r}
 result <- run(model)
 ```
 
@@ -169,8 +152,7 @@ status and plot it. In the study model we summarised this result over
 many trajectories to determine the likely efficacy of the
 surveillance. Here we will just look at a single trajectory:
 
-
-```r
+```{r, warning = FALSE, results = 'asis', fig.width= 8, fig.height = 6}
 df <- counti(result, "true")
 df_bulk_milk <- counti(result, "milk")
 
@@ -188,8 +170,6 @@ lines(df_bulk_milk$time,
      lty = 2)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
-
 ## A single herd model
 
 The following is an example of the model run in a single holding with
@@ -197,8 +177,7 @@ The following is an example of the model run in a single holding with
 compartment at day-0 and the model is allowed to run for 20 years. In
 this example we run 10000 trajectories of this single herd.
 
-
-```r
+```{r, warning = FALSE}
 library(paratb)
 model <- paratb()
 model@u0["H3",] <- 5L
@@ -209,8 +188,7 @@ model_result <- run(model)
 We can then extract and the outcome from each of the trajectories of
 the model and summarize the within herd prevalence over time:
 
-
-```r
+```{r, warning = FALSE}
 traj <- paratb::prev(model_result, "true", "wnp")
 med <- tapply(traj$prevalence, traj$time, median)
 low95 <- tapply(traj$prevalence, traj$time, function(x) {
@@ -229,8 +207,7 @@ And finally plot the median result of the within herd prevalence and a
 credibility interval illustrating the central 95% of trajectories in
 the experiment over time:
 
-
-```r
+```{r, warning = FALSE}
 plot(x = names(med),
      y = med,
      pch = 20,
@@ -245,12 +222,11 @@ axis(side = 1,
      at = x,
      labels = xyears,
      cex.axis = 1, cex.lab = 1, cex.main = 1)
-```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
+```
 
 ## Session Information
 
 This vignette was generated with paratb package version
-1.1, SimInf version
-8.0.0.9000 and R version 4.0.3 (2020-10-10).
+`r packageVersion("paratb")`, SimInf version
+`r packageVersion("SimInf")` and `r version$version.string`.

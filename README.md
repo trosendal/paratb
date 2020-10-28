@@ -1,21 +1,6 @@
----
-title: Model of disease spread and surveillance of paratuberculosis in cattle
-author: Thomas Rosendal [![ORCID iD](https://orcid.org/sites/default/files/images/orcid_16x16.gif)](https://orcid.org/0000-0002-6576-9668)
-output:
-  html_document:
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: true
-    toc_depth: 3
-vignette: >
-  %\VignetteIndexEntry{Model_Example}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage{UTF-8}
----
+# Model of disease spread and surveillance of paratuberculosis in cattle
 
 [![Build Status](https://travis-ci.org/trosendal/paratb.svg?branch=master)](https://travis-ci.org/trosendal/paratb)
-# paratb
 
 This is an R package of an infectious disease model of
 paratuberculosis in cattle. It also includes features that allow for
@@ -36,11 +21,6 @@ github like this:
 ```r
 library("remotes")
 install_github("trosendal/paratb")
-```
-
-```
-## Skipping install of 'paratb' from a github remote, the SHA1 (87ec5fcd) has not changed since last install.
-##   Use `force = TRUE` to force installation
 ```
 
 ## Load the library

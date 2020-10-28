@@ -5,7 +5,8 @@
 This is an R package of an infectious disease model of
 paratuberculosis in cattle. It also includes features that allow for
 the simulation of surveillance of paratuberculosis in the study
-herds.
+herds. The package was developed and used for the research described
+in [10.1016/j.prevetmed.2020.105152](https://doi.org/10.1016/j.prevetmed.2020.105152)
 
 ## License
 
@@ -228,6 +229,17 @@ axis(side = 1,
 ```
 
 ![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
+
+## Citation
+
+`paratb` was written to measure the performance of various
+surveillance strategies for paratuberculosis on cattle in Sweden, to
+cite `paratb` in publications, please use:
+
+- Rosendal T, Widgren S, Ståhl K, Frössling J (2020) Modelling spread
+  and surveillance of *Mycobacterium avium* subsp. *paratuberculosis* in
+  the Swedish cattle trade network.  Preventive Veterinary Medicine, 183(105152). doi:
+  [10.1016/j.prevetmed.2020.105152](https://doi.org/10.1016/j.prevetmed.2020.105152)
 
 ## Session Information
 

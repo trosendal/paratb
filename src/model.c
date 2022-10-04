@@ -603,15 +603,25 @@ static int ptsFun(
 
 static SEXP SIMINF_MODEL_RUN(SEXP model, SEXP solver)
 {
-     TRFun tr_fun[] = {&trFun1, &trFun2, &trFun3, &trFun4, &trFun5, &trFun6,
+    static SEXP(*SimInf_run)(SEXP, SEXP, TRFun*, PTSFun) = NULL;
+    TRFun tr_fun[] = {&trFun1, &trFun2, &trFun3, &trFun4, &trFun5, &trFun6,
                        &trFun7, &trFun8, &trFun9, &trFun10, &trFun11, &trFun12,
                        &trFun13, &trFun14, &trFun15, &trFun16, &trFun17, &trFun18,
                        &trFun19, &trFun20, &trFun21, &trFun22, &trFun23, &trFun24,
                        &trFun25, &trFun26, &trFun27, &trFun28, &trFun29, &trFun30,
                        &trFun31, &trFun32, &trFun33, &trFun34, &trFun35, &trFun36,
                        &trFun37, &trFun38, &trFun39, &trFun43, &trFun44, &trFun45};
-     DL_FUNC SimInf_run = R_GetCCallable("SimInf", "SimInf_run");
-     return SimInf_run(model, solver, tr_fun, &ptsFun);
+
+    if (!SimInf_run) {
+        SimInf_run = (SEXP(*)(SEXP, SEXP, TRFun*, PTSFun))
+            R_GetCCallable("SimInf", "SimInf_run");
+
+        if (!SimInf_run) {
+            Rf_error("Cannot find function 'SimInf_run'.");
+        }
+    }
+
+    return SimInf_run(model, solver, tr_fun, &ptsFun);
 }
 
 static const R_CallMethodDef callMethods[] =
